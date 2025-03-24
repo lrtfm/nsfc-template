@@ -3,7 +3,7 @@
 % \usepackage[left=1in+0.7cm,right=1in+0.4cm,top=1.91cm,bottom=1.91cm]{geometry}
 \usepackage[left=1in+0.7cm,right=1in+0.4cm,top=1in,bottom=1in]{geometry}
 \usepackage{xcolor}
-\usepackage{hyperref}
+\usepackage[hidelinks]{hyperref}
 \usepackage{graphicx} 
 \usepackage{caption}
 \usepackage{subcaption}
@@ -83,7 +83,7 @@
         name={,.},
         aftername={},% no space
         number=\arabic{subsection},
-        indent=2em,
+        % indent=2em,
         runin=false,
         aftertitle={},
         hang=false,
@@ -91,9 +91,11 @@
         % afterskip=0pt,
     },
     subsubsection={
+        format=\bfseries\zihao{-4}\kaishu\nsfcsetlinespace,
+        numberformat=\mdseries\zihao{-4}\kaishu\nsfcsetlinespace,
         number=\arabic{subsection}.\arabic{subsubsection},
         aftername={ },% a space
-        indent=2em,
+        % indent=2em,
         beforeskip=8pt plus 2pt,
         afterskip=4pt minus 2pt,
     }
@@ -101,7 +103,7 @@
 
 \pretocmd{\section}{% enable runin for section 3
   \ifnum\value{section}=2%
-    \ctexset{subsection/runin=true}%
+    \ctexset{subsection={runin=true, indent=2em}}%
   \fi
 }{}{}
 
@@ -122,7 +124,7 @@
 }
 \ExplSyntaxOff
 
-\defbibheading{bibliography}[\bibname]{\subsubsection*{#1}}
+\defbibheading{bibliography}[\bibname]{\subsection*{#1}}
 \renewcommand{\bibitemsep}{0pt}
 
 \renewcommand{\maketitle}[1][报告正文{\bfseries\hglue0pt Main Body of Proposal}]{%
@@ -145,7 +147,18 @@
 }
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%% FORMAT SETTING  END %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{filecontents}[overwrite]{refs.bib}
+\begin{filecontents}[overwrite]{nsfc-template-refs.bib}
+
+@article{einstein1905,
+  author = {Einstein, Albert},
+  title = {Ist die Trägheit eines Körpers von seinem Energieinhalt abhängig?},
+  journal = {Annalen der Physik},
+  volume = {323},
+  number = {13},
+  pages = {639-641},
+  doi = {10.1002/andp.19053231314},
+  year = {1905}
+}
 
 @article{einstein1915,
   author = {Einstein, Albert},
@@ -172,7 +185,7 @@
 }
 \end{filecontents}
 
-\addbibresource{refs.bib}% Change the filename to yours or add items to the filecontents env above.
+\addbibresource{nsfc-template-refs.bib}% Change the filename to yours or add items to the filecontents env above.
 
 \begin{document}
 \maketitle
@@ -189,7 +202,19 @@
 }
 
 
-\subsection{爱因斯坦场方程}
+\subsection{相对论}
+
+\subsubsection{质能方程}
+
+爱因斯坦于1905年提出了著名的质能方程\cite{einstein1905}，表达了质量与能量的关系：
+\begin{equation}
+E = mc^2.
+\end{equation}
+这个公式揭示了一个基本原理：\textbf{质量和能量是等价的}。质量可以转化为能量，
+能量也可以转化为质量。这一原理为核能、粒子物理等领域奠定了理论基础。
+
+
+\subsubsection{爱因斯坦场方程}
 
 爱因斯坦场方程\cite{einstein1915}
 \begin{equation}
@@ -214,7 +239,8 @@ $T_{\mu\nu}$ & 能量动量张量 \\
 
 \subsection{PGF/Ti\textit{k}z}
 
-PGF/Ti\textit{k}Z\cite{tantau2023} 是一个基于 \LaTeX{} 的绘图宏包，用于高质量矢量图形的绘制（见\cref{fig:tikz}），特别适合学术论文和技术文档。
+PGF/Ti\textit{k}Z\cite{tantau2023} 是一个基于 \LaTeX{} 的绘图宏包，
+用于高质量矢量图形的绘制（见\cref{fig:tikz}），特别适合学术论文和技术文档。
 
 \begin{figure}[h]
     \centering
