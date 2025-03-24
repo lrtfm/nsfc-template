@@ -1,0 +1,232 @@
+\documentclass[a4paper,zihao=-4,UTF8,AutoFakeBold=2.85]{ctexart}
+\usepackage[left=1.26in,right=1.26in,top=1in,bottom=1in]{geometry}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{graphicx} 
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{amssymb,amsmath,amsfonts,amsthm}
+\usepackage{bm}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{zhlipsum}
+\usepackage{tikz}
+\usepackage[%
+    backend=biber,
+    style=gb7714-2015, maxbibnames=3,minbibnames=3,
+    gbnamefmt=givenahead,
+    doi=false,
+    url=false,
+]{biblatex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% FORMAT SETTING  BEGIN %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\pagestyle{empty}
+
+\DeclareCaptionFont{nsfc}{\zihao{5}\kaishu}
+\captionsetup{font=nsfc}
+\captionsetup[table]{position=top}
+\captionsetup[figure]{position=bottom}
+
+\definecolor{nsfcblue}{RGB}{0,112,192}% standard blue in ms-word sRGB: (0, 112, 192) color space
+\newcommand{\nsfcblue}{\color{nsfcblue}}
+\makeatletter
+\newcommand{\nsfcbaselineskip}{22} % the nsfc doc use fixed baselineskip = 22pt
+\newcommand{\nsfcsetlinespace}[1][\f@size]{%
+    % Set the linespread to make the baselineskip equal to 22pt according to the current font or
+    % option (number of the font size without unit). And put it into effect immediately.
+    % 1.5220700152207 for \zihao{-4}
+    % 1.304632370016512 for \zihao{4}
+    \expandafter\linespread{\fpeval{\nsfcbaselineskip/(#1*1.2)}}%
+    \selectfont%
+}%
+\makeatother
+\nsfcsetlinespace
+
+\newcommand{\nsfcprompt}[1]{%
+    % To add prompt for section and subsection as in the nsfc doc
+    \ifstrempty{#1}{\makebox[0pt]{}\par}{{\zihao{4}\kaishu\nsfcblue #1}\par}%
+}
+
+\ctexset{
+    section={
+        format=\CTEXifname{\zihao{4}\kaishu\bfseries\nsfcblue\nsfcsetlinespace}{\bfseries\centering},
+        name={（,）},
+        aftername={},
+        number=\chinese{section},
+        indent=\CTEXifname{2em}{0pt},
+        runin=true,
+        aftertitle={},
+        beforeskip=8pt plus 2pt,
+        afterskip=0pt,
+    },
+    subsection={
+        format=\zihao{4}\kaishu\nsfcblue\nsfcsetlinespace,
+        titleformat+={\bfseries},
+        name={,.},
+        aftername={ },% a space
+        number=\arabic{subsection},
+        indent=2em,
+        runin=true,
+        aftertitle={},
+        hang=false,
+        beforeskip=4pt plus 2pt,
+        afterskip=0pt,
+    },
+    subsubsection={
+        number=\arabic{subsection}.\arabic{subsubsection},
+        aftername={ },% a space
+        % beforeskip=4pt plus 2pt,
+        % afterskip=2pt minus 2pt,
+    }
+}
+
+\defbibheading{bibliography}[\bibname]{\subsubsection*{#1}}
+\renewcommand{\bibitemsep}{0pt}
+
+\renewcommand{\maketitle}[1][报告正文]{%
+    {\centering\zihao{3}\kaishu\bfseries\nsfcsetlinespace #1\par}\vskip8pt%
+    {\zihao{4}\kaishu%
+        参照以下提纲撰写，要求内容翔实、清晰，层次分明，标题突出。%
+        {\nsfcblue\bfseries%
+            请勿删除或改动下述提纲标题及括号中的文字。%
+        }%
+    }%
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%% FORMAT SETTING  END %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{filecontents}[overwrite]{refs.bib}
+@incollection{lu1926,
+  author    = {鲁迅},
+  booktitle = {彷徨},
+  title     = {祝福},
+  publisher = {北新书局},
+  year      = {1926},
+}
+
+@Manual{tantau2023,
+   author    = {Till Tantau},
+   title     = {The TikZ and PGF Packages},
+   subtitle  = {Manual for version 3.1.10},
+   url       = {https://github.com/pgf-tikz/pgf},
+   date      = {2023-1-15},
+}
+\end{filecontents}
+
+\addbibresource{refs.bib}% Change the filename to yours or add items to the filecontents env above.
+
+\begin{document}
+\maketitle
+
+\section{立项依据与研究内容}
+\nsfcprompt{（建议8000字以内）：}
+
+\subsection{项目的立项依据}
+\nsfcprompt{（研究意义、国内外研究现状及发展动态分析，需结合科学研究发展趋势来论述科学意义；
+或结合国民经济和社会发展中迫切需要解决的关键科技问题来论述其应用前景。附主要参考文献目录）；}
+
+\zhlipsum*[1][name=zhufu]\cite{lu1926}
+
+\begin{figure}[h!]
+    \usetikzlibrary {mindmap}
+    \centering
+    \begin{tikzpicture}
+        [mindmap,
+         every node/.style={concept, execute at begin node=\hskip0pt},
+         root concept/.append style={concept color=black, fill=white, line width=1ex, text=black},
+         text=white,
+         grow cyclic,
+         level 1/.append style={level distance=4.5cm,sibling angle=90},
+         level 2/.append style={level distance=3cm,sibling angle=45}]
+        \node [root concept] {思维导图}
+          child [concept color=orange] { node {A}
+            child { node {A1} }
+            child { node {A2} }
+            child { node {A3} }
+            child { node {A4} }
+          };
+    \end{tikzpicture}
+    \caption{思维导图(该图使用 Ti{\it k}Z\cite{tantau2023} 绘制)}
+\end{figure}
+
+\begin{table}[h!]
+    \centering\zihao{5}
+    \caption{表格}
+    \begin{tabular}{ccc}
+       \toprule 
+       第一列 & 第二列 & 第三列 \\
+       \midrule
+       A1 & A2 & A3 \\
+       B1 & B2 & B3 \\
+       \bottomrule
+    \end{tabular}
+\end{table}
+
+\printbibliography
+
+\subsection{项目的研究内容、研究目标，以及拟解决的关键科学问题}
+\nsfcprompt{（此部分为重点阐述内容）；}
+
+\zhlipsum[2][name=zhufu]
+
+\subsection{拟采取的研究方案及可行性分析}
+\nsfcprompt{（包括研究方法、技术路线、实验手段、关键技术等说明）；}
+
+\zhlipsum[3][name=zhufu]
+
+\subsection{本项目的特色与创新之处；}
+\nsfcprompt{}
+\zhlipsum[4][name=zhufu]
+
+\subsection{年度研究计划及预期研究结果}
+\nsfcprompt{（包括拟组织的重要学术交流活动、国际合作与交流计划等）。}
+\zhlipsum[5][name=zhufu]
+
+% (二)
+\section{研究基础与工作条件}
+\nsfcprompt{}
+
+\subsection{研究基础}
+\nsfcprompt{（与本项目相关的研究工作积累和已取得的研究工作成绩）；}
+
+\zhlipsum[6][name=zhufu]
+
+\subsection{工作条件}
+\nsfcprompt{（包括已具备的实验条件，尚缺少的实验条件和拟解决的途径，包括利用国家实验室、国家重
+点实验室和部门重点实验室等研究基地的计划与落实情况）；}
+
+\zhlipsum[7][name=zhufu]
+
+\subsection{正在承担的与本项目相关的科研项目情况}%
+\nsfcprompt{（申请人正在承担的与本项目相关的科研项目情况，包括国家自然科学基金的项目和国家其他
+科技计划项目，要注明项目的资助机构、项目类别、批准号、项目名称、获资助金额、起止年月、与本项目
+的关系及负责的内容等）；}
+无。
+
+\subsection{完成国家自然科学基金项目情况}
+\nsfcprompt{（对申请人负责的前一个已资助期满的科学基金项目（项目名称及批准号）完成情况、后续研
+究进展及与本申请项目的关系加以详细说明。另附该项目的研究工作总结摘要（限500字）和相关成果详细目录）。}
+无。
+
+\section{其他需要说明的情况}{}
+
+\subsection{申请人同年申请不同类型的国家自然科学基金项目情况}
+\nsfcprompt{（列明同年申请的其他项目的项目类型、项目名称信息，并说明与本项目之间的区别与联系）。}
+无。
+
+\subsection[申请人或主要参与者是否存在同年申请或参与申请国自然项目的单位不一致]{}
+\nsfcprompt{具有高级专业技术职务（职称）的申请人是否存在同年申请或者参与申请国家自然科学基金项
+目的单位不一致的情况；如存在上述情况，列明所涉及人员的姓名，申请或参与申请的其他项目的项目类型、
+项目名称、单位名称、上述人员在该项目中是申请人还是参与者，并说明单位不一致原因。}
+无。
+
+\subsection[申请人或主要参与者是否存在与正承担国自然项目单位不一致]{}
+\nsfcprompt{具有高级专业技术职务（职称）的申请人是否存在与正在承担的国家自然科学基金项目的单位
+不一致的情况；如存在上述情况，列明所涉及人员的姓名，正在承担项目的批准号、项目类型、项目名称、
+单位名称、起止年月，并说明单位不一致原因。}
+无。
+
+\subsection[其他]{}%
+\nsfcprompt{其他。}
+无。
+
+\end{document}

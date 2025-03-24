@@ -1,0 +1,316 @@
+\documentclass[a4paper,zihao=-4,UTF8,AutoFakeBold=2.85]{ctexart}
+\usepackage{calc}
+% \usepackage[left=1in+0.7cm,right=1in+0.4cm,top=1.91cm,bottom=1.91cm]{geometry}
+\usepackage[left=1in+0.7cm,right=1in+0.4cm,top=1in,bottom=1in]{geometry}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{graphicx} 
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{amssymb,amsmath,amsfonts,amsthm}
+\usepackage{cleveref} % must load after amsmath
+\usepackage{bm}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{zhlipsum}
+\usepackage{tikz}
+\usepackage[%
+    backend=biber,
+    style=gb7714-2015, maxbibnames=3,minbibnames=3,
+    gbnamefmt=givenahead,
+    doi=false,
+    url=false,
+]{biblatex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% FORMAT SETTING  BEGIN %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\pagestyle{empty}
+
+\setmainfont{Times New Roman}
+
+\DeclareCaptionFont{nsfc}{\zihao{5}\kaishu}
+\captionsetup{font=nsfc}
+\captionsetup[table]{position=top}
+\captionsetup[figure]{position=bottom}
+
+\crefname{table}{表}{表}
+\Crefname{table}{表}{表}
+\crefname{figure}{图}{图}
+\Crefname{figure}{图}{图}
+\crefname{equation}{式}{式}
+\Crefname{equation}{式}{式}
+
+\definecolor{nsfcblue}{RGB}{0,112,192}% standard blue in ms-word sRGB: (0, 112, 192) color space
+\newcommand{\nsfcblue}{\color{nsfcblue}}
+\makeatletter
+\newcommand{\nsfcbaselineskip}{22} % the nsfc doc use fixed baselineskip = 22pt
+\newcommand{\nsfcsetlinespace}[1][\f@size]{%
+    % Set the linespread to make the baselineskip equal to 22pt according to the current font or
+    % option (number of the font size without unit). And put it into effect immediately.
+    % 1.5220700152207 for \zihao{-4}
+    % 1.304632370016512 for \zihao{4}
+    \expandafter\linespread{\fpeval{\nsfcbaselineskip/(#1*1.2)}}%
+    \selectfont%
+}%
+\newcommand{\nsfcremovespace}{\texorpdfstring{\hskip-7pt}{}}
+\makeatother
+\nsfcsetlinespace
+
+\NewDocumentCommand{\nsfcprompt}{O{0pt} O{0pt} m m}{%
+    % To add prompt for section and subsection as in the nsfc doc
+    \ifstrempty{#3}{\makebox[0pt]{}\par}{%
+        \vskip#1
+        {\zihao{4}\kaishu\nsfcblue\nsfcsetlinespace[10] #3\par}%
+        \vskip8.15pt\vskip#2%
+        {\zihao{-4}\kaishu\nsfcblue\nsfcsetlinespace[15] #4\par}%
+    }%
+}
+
+\ctexset{
+    section={
+        format=\CTEXifname{\zihao{4}\kaishu\bfseries\nsfcblue\nsfcsetlinespace[11]}{\bfseries\centering},
+        name={（,）},
+        aftername={},
+        number=\chinese{section},
+        indent=\CTEXifname{3.5em}{0pt},
+        runin=false,
+        aftertitle={},
+        beforeskip=12pt plus 2pt,
+        afterskip=0pt,
+    },
+    subsection={
+        format=\zihao{4}\kaishu\nsfcsetlinespace,
+        titleformat+={\bfseries},
+        name={,.},
+        aftername={},% no space
+        number=\arabic{subsection},
+        indent=2em,
+        runin=false,
+        aftertitle={},
+        hang=false,
+        % beforeskip=4pt plus 2pt,
+        % afterskip=0pt,
+    },
+    subsubsection={
+        number=\arabic{subsection}.\arabic{subsubsection},
+        aftername={ },% a space
+        indent=2em,
+        beforeskip=8pt plus 2pt,
+        afterskip=4pt minus 2pt,
+    }
+}
+
+\pretocmd{\section}{% enable runin for section 3
+  \ifnum\value{section}=2%
+    \ctexset{subsection/runin=true}%
+  \fi
+}{}{}
+
+\ExplSyntaxOn
+% for adjusting kern of english text
+\NewDocumentCommand{\nsfckernedtext}{m m}{\nsfc_kerned_text:nn { #1 } { #2 }}
+\cs_new_protected:Npn \nsfc_kerned_text:nn #1 #2
+{
+  \seq_set_split:Nnn \l_tmpa_seq { ~ } { #2 }
+  \seq_map_inline:Nn \l_tmpa_seq
+  {
+    \nsfc_kerned_word:nn { #1 } { ##1 } \space
+  }
+}
+\cs_new_protected:Npn \nsfc_kerned_word:nn #1 #2
+{
+  \tl_map_inline:nn { #2 } { ##1 \kern #1 }
+}
+\ExplSyntaxOff
+
+\defbibheading{bibliography}[\bibname]{\subsubsection*{#1}}
+\renewcommand{\bibitemsep}{0pt}
+
+\renewcommand{\maketitle}[1][报告正文{\bfseries\hglue0pt Main Body of Proposal}]{%
+    \vglue-5pt{\centering\zihao{3}\heiti\nsfcsetlinespace #1\par}\vskip5pt%
+    {\kaishu\zihao{4}\nsfcsetlinespace[10]%
+        参照以下提纲撰写，要求内容翔实、清晰，层次分明，标题突出。%
+
+        \vskip5.65pt
+        The proposal shall be written in accordance with the following \\outline,
+        with informative content, clear structure, and prominent titles.
+
+        \vskip5.65pt
+        {\bfseries\nsfcblue%
+        请勿删除或改动下述提纲标题及括号中的文字。}
+
+        \vskip7.65pt
+        {\nsfcblue%
+        Please do not delete or change the title of the outline and the words in brackets.\par}
+    }%
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%% FORMAT SETTING  END %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{filecontents}[overwrite]{refs.bib}
+
+@article{einstein1915,
+  author = {Einstein, Albert},
+  title = {Die Feldgleichungen der Gravitation},
+  journal = {Sitzungsberichte der Preussischen Akademie der Wissenschaften zu Berlin},
+  pages = {844--847},
+  year = {1915}
+}
+  
+@incollection{lu1926,
+  author    = {鲁迅},
+  booktitle = {彷徨},
+  title     = {祝福},
+  publisher = {北新书局},
+  year      = {1926},
+}
+
+@manual{tantau2023,
+  author    = {Till Tantau},
+  title     = {The TikZ and PGF Packages},
+  subtitle  = {Manual for version 3.1.10},
+  url       = {https://github.com/pgf-tikz/pgf},
+  date      = {2023-1-15},
+}
+\end{filecontents}
+
+\addbibresource{refs.bib}% Change the filename to yours or add items to the filecontents env above.
+
+\begin{document}
+\maketitle
+
+% （一）
+\section{主要学术成绩{\mdseries（建议不超过4000字）}%
+    \texorpdfstring{\newline\hglue2.5em\zihao{-4}}{}%
+    Major academic achievements(no more than 4000 words)}
+\nsfcprompt[-1pt][6pt]{%
+    着重阐述所取得研究成果的创新性、科学价值及本人贡献等。
+}{%
+    In this part, you shall focus on the innovativeness and scientific value of the research results,
+    and your personal contribution.
+}
+
+
+\subsection{爱因斯坦场方程}
+
+爱因斯坦场方程\cite{einstein1915}
+\begin{equation}
+R_{\mu\nu}-\frac{1}{2}Rg_{\mu\nu}+\Lambda g_{\mu\nu}=\frac{8\pi G}{c^4}T_{\mu\nu},
+\end{equation}
+其中符号含义见\cref{table:syms}。
+
+\begin{table}[h]
+\centering
+\begin{tabular}{clccl}
+\toprule
+符号 & 含义 && 符号 & 含义 \\
+\midrule
+$R_{\mu\nu}$ & 里奇曲率张量 && $R$ & 里奇标量 \\
+$g_{\mu\nu}$ & 度规张量  && $\Lambda$ & 宇宙学常数 \\
+$G$ & 万有引力常数  && $c$ & 真空中的光速  \\
+$T_{\mu\nu}$ & 能量动量张量 \\
+\bottomrule
+\end{tabular}
+\caption{爱因斯坦场方程符号说明}\label{table:syms}
+\end{table}
+
+\subsection{PGF/Ti\textit{k}z}
+
+PGF/Ti\textit{k}Z\cite{tantau2023} 是一个基于 \LaTeX{} 的绘图宏包，用于高质量矢量图形的绘制（见\cref{fig:tikz}），特别适合学术论文和技术文档。
+
+\begin{figure}[h]
+    \centering
+    \begin{tikzpicture}
+        \pgfsetfillopacity{0.5}
+        \fill[red] (90:1cm) circle (11mm);
+        \fill[green] (210:1cm) circle (11mm);
+        \fill[blue] (-30:1cm) circle (11mm);
+    \end{tikzpicture}
+    \caption{Ti\textit{k}Z 绘图}\label{fig:tikz}
+\end{figure}
+
+
+\subsection{祝福节选}
+\zhlipsum*[8][name=zhufu]\cite{lu1926}
+
+\printbibliography
+
+% (二)
+
+\section{全职回国（来华）后拟开展的研究工作{\mdseries（建议不超过4000字）}%
+    \texorpdfstring{\zihao{-4}%\spaceskip=0.2em
+        \nsfckernedtext{-.3pt}{%
+        The research work to be carried out after returning/coming
+        to China full-time(no more than 4000 words)%
+    }}{}%
+}
+\nsfcprompt[4pt]{%
+    主要阐述全职回国（来华）后主要研究方向和思路、预期目标、团队和科研条件的支撑情况。
+}{\nsfckernedtext{-.2pt}{%
+    In this part, you shall mainly expound the main research direction and ideas, expected goals,
+    team and research conditions after returning/coming to China full-time.
+}}
+
+% (三)
+\section{其他需要说明的问题\texorpdfstring{\zihao{-4}}{}Other issues need to be addressed.}
+
+\subsection{\nsfcremovespace}% 1
+\nsfcprompt{%
+申请人同年申请不同类型的国家自然科学基金项目情况（列明同年申请的其他
+项目的项目类型、项目名称信息，并说明与本项目之间的区别与联系；已收到自然科学基金
+委不予受理或不予资助决定的，无需列出）。
+}{%
+Proposals that the applicant has submitted for different types of NSFC programs in the same year
+(please list the types of programs and title of proposals submitted in the same year, and explain
+the differences and connections with this proposal;Proposals deemed ineligible or unfundable by the
+NSFC can be excluded).
+}
+无。
+
+\subsection{\nsfcremovespace}% 2
+\nsfcprompt{%
+申请人是否存在同年申请或者参与申请国家自然科学基金项目的单位不一致的
+情况（如存在上述情况，列明所涉及人员的姓名，申请或参与申请的其他项目的项目类型、
+项目名称、单位名称、上述人员在该项目中是申请人还是参与者，并说明单位不一致原因）。
+}{%
+Whether the applicant's host institution is inconsistent with the one indicated in other proposals
+that he or she submits or participates in applying in the same year (if there is any such
+inconsistency, please list the names of the personnel involved, the types of programs, titles of
+proposals, names of host institutions for other projects that you applied or participated in,
+whether the abovementioned personnel are the applicants or participants in the projects, and explain
+the reasons for the inconsistency).}
+
+无。
+
+\subsection{\nsfcremovespace}% 3
+\nsfcprompt{%
+申请人是否存在与正在承担的国家自然科学基金项目的单位不一致的情况（如存在上述情况，
+列明所涉及人员的姓名，正在承担项目的批准号、项目类型、项目名称、单位名称、起止年月，
+并说明单位不一致原因）。
+}{%
+Whether the applicant's host institution is inconsistent with the one indicated in the NSFC project
+that he/she is undertaking (if there is any such inconsistency, please list the name of the
+personnel involved, approval number, type of program, title of proposal, name of host institution,
+start and end dates of the undertaking project, and explain the reasons for the inconsistency).}
+无。
+
+\subsection{\nsfcremovespace}% 4
+\nsfcprompt{%
+申请人教育或工作经历若不连续请说明原因。
+}{%
+If there is any discontinuity in education or work experience, please explain the reason.
+}
+无。
+
+\subsection{\nsfcremovespace}% 5
+\nsfcprompt{%
+同年以不同专业技术职务（职称）申请或参与申请科学基金项目的情况（应详细说明原因）。
+}{%
+Situation where the applicant applies for NSFC programs as PI or participant using different
+professional or academic titles in the same year (Please elaborate on the reasons).
+}
+无。
+
+\subsection{\nsfcremovespace}% 6
+\nsfcprompt{其他。{\zihao{-4}Others.}}{}
+无。
+
+\end{document}
